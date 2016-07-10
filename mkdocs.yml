@@ -1,0 +1,12 @@
+site_name: Java-Microservice
+pages:
+- Home: index.md
+
+- Projectinfos: projectinfos/index.md
+- Additional Infos: additionalinfos/index.md
+- About: about.md
+
+theme: united
+#markdown_extensions: [fenced_code]
+markdown_extensions:
+    - toc:
