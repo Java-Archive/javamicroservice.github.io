@@ -24,10 +24,6 @@ We are using this for Team - Code-Reviews too. If you have any questions about t
 
 <iframe src="http://review.rapidpm.org:8080/JMS/view" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="yes" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="http://review.rapidpm.org:8080/JMS/view" title="Upsource - RapidPM - Java-Microservice" target="_blank">Upsource - RapidPM - Java-MicroService</a> </strong> sponsored by from <strong>Macros reply GmbH</strong> </div>
 
-
-
-
-
 ## Youtrack
 For the version planning and bugtracking we are using <div style="margin-bottom:5px"> <strong> <a href="http://issues.rapidpm.org:8080/issues/JMS?q=State%3A+Submitted+%2C+Open+%2C+%7BIn+Progress%7D++%2C+%7BTo+be+discussed%7D+%2C+Reopened+%2C+%7BOn+Hold%7D" title="Youtrack - RapidPM - Java-MicroService" target="_blank">Youtrack - RapidPM - Java-MicroService</a> </strong> </div>
 
