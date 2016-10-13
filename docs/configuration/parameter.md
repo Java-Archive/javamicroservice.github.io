@@ -6,12 +6,13 @@ The MicroService supports by  default the following startup parameters:
 * servletPort
 * servletHost
 
-E.g. setting the servlet port will be "-servletPort 7081".
+For example, to set the servlet port use "-servletPort 7081".
 
-To define your own parameters use the interface *CmdLineStartupAction* 
-and implement your own action.
+Additionally, if you want to define your own parameters add the dependency **rapidpm-microservice-modules-optionals-cli** and use the interface *CmdLineStartupAction*:
 
 ```java
+package org.rapidpm.microservice.optionals.cli;
+
 public interface CmdLineStartupAction {
     List<Option> getOptions();
     void execute(CommandLine cmdLine);
@@ -20,6 +21,10 @@ public interface CmdLineStartupAction {
 
 Here's an example implementation that reads in a single property:
 ```java
+public class MyPropertyCmdLineOption implements CmdLineStartupAction {
+
+  public static final String OPT = "mp";
+
   @Override
   public List<Option> getOptions() {
     return Collections.singletonList(new Option(OPT, "myproperty", true, "set a value for this system property"));
@@ -32,4 +37,5 @@ Here's an example implementation that reads in a single property:
       System.setProperty("myproperty", optionValue);
     }
   }
+}  
 ```
