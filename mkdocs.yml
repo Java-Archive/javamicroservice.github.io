@@ -2,6 +2,9 @@ site_name: Java-Microservice
 pages:
 - Home: index.md
 
+- Configuration:
+  - Parameters: configuration/parameter.md
+  - Startup/Shutdown Action: configuration/action.md
 - Projectinfos: projectinfos/index.md
 - Additional Infos: additionalinfos/index.md
 - About: about.md
