@@ -1,4 +1,4 @@
-# Configuration
+# Parameters
 
 The MicroService supports by  default the following startup parameters:
 * restPort
