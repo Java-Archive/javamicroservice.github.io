@@ -46,6 +46,91 @@
             "title": "Startup / Shutdown Actions"
         },
         {
+            "location": "/optionals/admin/",
+            "text": "Administration Module\n\n\nThe MicroService administration module makes it possible to conveniently shut down the service with an HTTP call. \nOnce the module is included to your service, it will host another path \n/admin/basicadministration/{timeout}\n besides the servlet and rest paths. \nThe path parameter behind the last \n/\n sets the milliseconds the service will wait till it stops.\nTo include this function just add the artifact \nrapidpm-microservice-modules-optionals-admin\n as a dependency in your pom.\n\n\nExample call to shutdown a MicroService:\n\n\nhttp://127.0.0.1:7080/rest/admin/basicadministration/1000\n\nOutput:\n[XNIO-2 task-1] WARN org.rapidpm.microservice.Main - shutdown delay [ms] = 1000\n[Timer-0] WARN org.rapidpm.microservice.Main - delayed shutdown  now = 2016-11-22T19:33:59.159",
+            "title": "Admin"
+        },
+        {
+            "location": "/optionals/admin/#administration-module",
+            "text": "The MicroService administration module makes it possible to conveniently shut down the service with an HTTP call. \nOnce the module is included to your service, it will host another path  /admin/basicadministration/{timeout}  besides the servlet and rest paths. \nThe path parameter behind the last  /  sets the milliseconds the service will wait till it stops.\nTo include this function just add the artifact  rapidpm-microservice-modules-optionals-admin  as a dependency in your pom.  Example call to shutdown a MicroService:  http://127.0.0.1:7080/rest/admin/basicadministration/1000\n\nOutput:\n[XNIO-2 task-1] WARN org.rapidpm.microservice.Main - shutdown delay [ms] = 1000\n[Timer-0] WARN org.rapidpm.microservice.Main - delayed shutdown  now = 2016-11-22T19:33:59.159",
+            "title": "Administration Module"
+        },
+        {
+            "location": "/optionals/cli/",
+            "text": "CommandLine Instructions\n\n\nFor an overview of the default commandline instructions pass the argument \n-h\n to the microservice jar. It will show you this:\n\n\n -h, -help:  Print this page\n -restPort:  Port for REST\n -restHost:  Host IP for REST\n -servletPort:  Port for optionslets\n -servletHost:  Host IP for optionslets\n\n\n\n\nIf you want to define your own parameters add the dependency \nrapidpm-microservice-modules-optionals-cli\n and use the interface \nCmdLineStartupAction\n:\n\n\npackage org.rapidpm.microservice.optionals.cli;\n\npublic interface CmdLineStartupAction {\n    List<Option> getOptions();\n    void execute(CommandLine cmdLine);\n}\n\n\n\n\nHere's an example implementation that reads in a single property:\n\n\npublic class MyPropertyCmdLineOption implements CmdLineStartupAction {\n\n  public static final String OPT = \"mp\";\n\n  @Override\n  public List<Option> getOptions() {\n    return Collections.singletonList(new Option(OPT, \"myproperty\", true, \"set a value for this system property\"));\n  }\n\n  @Override\n  public void execute(CommandLine commandLine) {\n    String optionValue = commandLine.getOptionValue(OPT);\n    if (commandLine.hasOption(OPT) && !optionValue.isEmpty()) {\n      System.setProperty(\"myproperty\", optionValue);\n    }\n  }\n}",
+            "title": "CLI"
+        },
+        {
+            "location": "/optionals/cli/#commandline-instructions",
+            "text": "For an overview of the default commandline instructions pass the argument  -h  to the microservice jar. It will show you this:   -h, -help:  Print this page\n -restPort:  Port for REST\n -restHost:  Host IP for REST\n -servletPort:  Port for optionslets\n -servletHost:  Host IP for optionslets  If you want to define your own parameters add the dependency  rapidpm-microservice-modules-optionals-cli  and use the interface  CmdLineStartupAction :  package org.rapidpm.microservice.optionals.cli;\n\npublic interface CmdLineStartupAction {\n    List<Option> getOptions();\n    void execute(CommandLine cmdLine);\n}  Here's an example implementation that reads in a single property:  public class MyPropertyCmdLineOption implements CmdLineStartupAction {\n\n  public static final String OPT = \"mp\";\n\n  @Override\n  public List<Option> getOptions() {\n    return Collections.singletonList(new Option(OPT, \"myproperty\", true, \"set a value for this system property\"));\n  }\n\n  @Override\n  public void execute(CommandLine commandLine) {\n    String optionValue = commandLine.getOptionValue(OPT);\n    if (commandLine.hasOption(OPT) && !optionValue.isEmpty()) {\n      System.setProperty(\"myproperty\", optionValue);\n    }\n  }\n}",
+            "title": "CommandLine Instructions"
+        },
+        {
+            "location": "/optionals/filesystem/",
+            "text": "",
+            "title": "Filesystem"
+        },
+        {
+            "location": "/optionals/",
+            "text": "",
+            "title": "Index"
+        },
+        {
+            "location": "/optionals/metrics/",
+            "text": "Metrics\n\n\nThis section describes the different metrics the MicroService has to offer.\n\n\nActive Resources\n\n\nNormally the MicroService prints out all of it's hosted resources, e.g. servlet classes.\nWith the activeresources module you can enable the option to ask for all resources made available through urls by the MicroService.\nTo retrieve the active resources call the path \n/info/activeurls\n, it will return a JSON message as response.\n\n\nExample call:\n\n\nhttp://127.0.0.1:7081/rest/info/activeurls\n\n\n\n\nResponse:\n\n\n{\n  \"restUrls\":[\"http://0.0.0.0:7081/rest/pojo\",\"http://0.0.0.0:7081/rest/info/activeurls\",\"http://0.0.0.0:7081/rest/test\",\"http://0.0.0.0:7081/rest/OverviewTest/pathA - paramA\"],\n  \"servletUrls\":[\"http://0.0.0.0:7080/microservice/test\",\"http://0.0.0.0:7080/microservicetestServlet\"],\n  \"singletonUrls\":[],\n  \"servletCounter\":2}\n\n\n\n\nHealth\n\n\nThe MicroService is based on the highly lightweight Undertow server. To retrieve information about the actual health of\nthe underlying server this module gives you access to the data of the Undertow SessionManager. \n\n\nExample call:\n\n\nhttp://127.0.0.1:7081/rest/metrics/health\n\n\n\n\nResponse:\n\n\n[\n  {\n    \"transientSessions\": [],\n    \"deploymentName\": \"ROOT.war\",\n    \"allSessions\": [],\n    \"activeSessions\": [],\n    \"startTime\": 1479842722116,\n    \"maxActiveSessions\": -1,\n    \"activeSessionCount\": 0,\n    \"averageSessionAliveTime\": 0,\n    \"createdSessionCount\": 0,\n    \"expiredSessionCount\": 0,\n    \"maxSessionAliveTime\": 0,\n    \"rejectedSessions\": 0\n  }\n]\n\n\n\n\nJVM\n\n\nAdditionally to the core health of the Undertow Server, this module gives you an inside into the JVM it's running in.\nThe information about the JVM splits into four sections, resulting in four paths (starting with \n/metics/jvm\n) you can call:\n- \nloadinfos\n: GarbageCollector\n- \nosinfos\n: informations about the os it's running on\n- \nspecinfos\n: RuntimeMXBean with system properties of the JVM\n- \nmemoryinfos\n: memory usage\n\n\nloadinfos\n\n\nContent: \n- collectionCount\n- collectionTime\n- memoryPoolNames\n- name\n\n\nExample call:\n\n\nhttp://127.0.0.1:7081/rest/metrics/jvm/loadinfos\n\n\n\n\nResponse:\n\n\n[\n  {\n    \"collectionCount\":8,\n    \"collectionTime\":79,\n    \"memoryPoolNames\":[\"PS Eden Space\",\"PS Survivor Space\"],\n    \"name\":\"PS Scavenge\"\n  },\n  {\n    \"collectionCount\":0,\n    \"collectionTime\":0,\n    \"memoryPoolNames\":[\"PS Eden Space\",\"PS Survivor Space\",\"PS Old Gen\"],\n    \"name\":\"PS MarkSweep\"\n  }\n ]\n\n\n\n\nosinfos\n\n\nContent: \n- name\n- arch\n- version\n- processors\n\n\nExample call:\n\n\nhttp://127.0.0.1:7081/rest/metrics/jvm/osinfos\n\n\n\n\nResponse:\n\n\n{\n  \"name\":\"Windows 10\",\n  \"arch\":\"amd64\",\n  \"version\":\"10.0\",\n  \"processors\":8\n}\n\n\n\n\nspecinfos\n\n\nContent: \n- name\n- vendor\n- version\n\n\nExample call:\n\n\nhttp://127.0.0.1:7081/rest/metrics/jvm/specinfos\n\n\n\n\nResponse:\n\n\n{\n  \"name\":\"Java Virtual Machine Specification\",\n  \"vendor\":\"Oracle Corporation\",\n  \"version\":\"1.8\"\n}\n\n\n\n\nmemoryinfos\n\n\nContent: \n- freeMemory\n- maxMemory\n- totalMemory\n- heapMemoryUsage\n- nonHeapMemoryUsage\n- objectPendingFinalizationCount\n\n\nExample call:\n\n\nhttp://127.0.0.1:7081/rest/metrics/jvm/memoryinfos\n\n\n\n\nResponse:\n\n\n{\n  \"freeMem\":196903200,\n  \"maxMem\":3808428032,\n  \"totalMem\":743440384,\n  \"objectPendingFinalizationCount\":0,\n  \"heapMemoryUsage\":{\"init\":268435456,\"used\":546537184,\"committed\":743440384,\"max\":3808428032},\n  \"nonHeapMemoryUsage\":{\"init\":2555904,\"used\":26764928,\"committed\":27852800,\"max\":-1}\n}\n\n\n\n\nPerformance",
+            "title": "Metrics"
+        },
+        {
+            "location": "/optionals/metrics/#metrics",
+            "text": "This section describes the different metrics the MicroService has to offer.",
+            "title": "Metrics"
+        },
+        {
+            "location": "/optionals/metrics/#active-resources",
+            "text": "Normally the MicroService prints out all of it's hosted resources, e.g. servlet classes.\nWith the activeresources module you can enable the option to ask for all resources made available through urls by the MicroService.\nTo retrieve the active resources call the path  /info/activeurls , it will return a JSON message as response.  Example call:  http://127.0.0.1:7081/rest/info/activeurls  Response:  {\n  \"restUrls\":[\"http://0.0.0.0:7081/rest/pojo\",\"http://0.0.0.0:7081/rest/info/activeurls\",\"http://0.0.0.0:7081/rest/test\",\"http://0.0.0.0:7081/rest/OverviewTest/pathA - paramA\"],\n  \"servletUrls\":[\"http://0.0.0.0:7080/microservice/test\",\"http://0.0.0.0:7080/microservicetestServlet\"],\n  \"singletonUrls\":[],\n  \"servletCounter\":2}",
+            "title": "Active Resources"
+        },
+        {
+            "location": "/optionals/metrics/#health",
+            "text": "The MicroService is based on the highly lightweight Undertow server. To retrieve information about the actual health of\nthe underlying server this module gives you access to the data of the Undertow SessionManager.   Example call:  http://127.0.0.1:7081/rest/metrics/health  Response:  [\n  {\n    \"transientSessions\": [],\n    \"deploymentName\": \"ROOT.war\",\n    \"allSessions\": [],\n    \"activeSessions\": [],\n    \"startTime\": 1479842722116,\n    \"maxActiveSessions\": -1,\n    \"activeSessionCount\": 0,\n    \"averageSessionAliveTime\": 0,\n    \"createdSessionCount\": 0,\n    \"expiredSessionCount\": 0,\n    \"maxSessionAliveTime\": 0,\n    \"rejectedSessions\": 0\n  }\n]",
+            "title": "Health"
+        },
+        {
+            "location": "/optionals/metrics/#jvm",
+            "text": "Additionally to the core health of the Undertow Server, this module gives you an inside into the JVM it's running in.\nThe information about the JVM splits into four sections, resulting in four paths (starting with  /metics/jvm ) you can call:\n-  loadinfos : GarbageCollector\n-  osinfos : informations about the os it's running on\n-  specinfos : RuntimeMXBean with system properties of the JVM\n-  memoryinfos : memory usage",
+            "title": "JVM"
+        },
+        {
+            "location": "/optionals/metrics/#loadinfos",
+            "text": "Content: \n- collectionCount\n- collectionTime\n- memoryPoolNames\n- name  Example call:  http://127.0.0.1:7081/rest/metrics/jvm/loadinfos  Response:  [\n  {\n    \"collectionCount\":8,\n    \"collectionTime\":79,\n    \"memoryPoolNames\":[\"PS Eden Space\",\"PS Survivor Space\"],\n    \"name\":\"PS Scavenge\"\n  },\n  {\n    \"collectionCount\":0,\n    \"collectionTime\":0,\n    \"memoryPoolNames\":[\"PS Eden Space\",\"PS Survivor Space\",\"PS Old Gen\"],\n    \"name\":\"PS MarkSweep\"\n  }\n ]",
+            "title": "loadinfos"
+        },
+        {
+            "location": "/optionals/metrics/#osinfos",
+            "text": "Content: \n- name\n- arch\n- version\n- processors  Example call:  http://127.0.0.1:7081/rest/metrics/jvm/osinfos  Response:  {\n  \"name\":\"Windows 10\",\n  \"arch\":\"amd64\",\n  \"version\":\"10.0\",\n  \"processors\":8\n}",
+            "title": "osinfos"
+        },
+        {
+            "location": "/optionals/metrics/#specinfos",
+            "text": "Content: \n- name\n- vendor\n- version  Example call:  http://127.0.0.1:7081/rest/metrics/jvm/specinfos  Response:  {\n  \"name\":\"Java Virtual Machine Specification\",\n  \"vendor\":\"Oracle Corporation\",\n  \"version\":\"1.8\"\n}",
+            "title": "specinfos"
+        },
+        {
+            "location": "/optionals/metrics/#memoryinfos",
+            "text": "Content: \n- freeMemory\n- maxMemory\n- totalMemory\n- heapMemoryUsage\n- nonHeapMemoryUsage\n- objectPendingFinalizationCount  Example call:  http://127.0.0.1:7081/rest/metrics/jvm/memoryinfos  Response:  {\n  \"freeMem\":196903200,\n  \"maxMem\":3808428032,\n  \"totalMem\":743440384,\n  \"objectPendingFinalizationCount\":0,\n  \"heapMemoryUsage\":{\"init\":268435456,\"used\":546537184,\"committed\":743440384,\"max\":3808428032},\n  \"nonHeapMemoryUsage\":{\"init\":2555904,\"used\":26764928,\"committed\":27852800,\"max\":-1}\n}",
+            "title": "memoryinfos"
+        },
+        {
+            "location": "/optionals/metrics/#performance",
+            "text": "",
+            "title": "Performance"
+        },
+        {
+            "location": "/optionals/service/",
+            "text": "",
+            "title": "Service"
+        },
+        {
             "location": "/projectinfos/",
             "text": "Project - Informations\n\n\nThis project is sponsored with OpenSource Licences from \n\n\n\n\n\n\nTeamCity\n\n\nYou can login as \nguest\n at \nTeamCity\n to see all build configurations and the actual\nstate of \ndevelop-\n and \nmaster-\nbranch.\n\n\nSonarCube\n\n\nFor the coverage and other metrics we are using our \nSonarCube\n installation. Feel free to check it.\n\n\nVersionEye\n\n\nWe are checking all dependencies with VersionEye. We try to use the latest versions \nfor all parts of the project.\n\n\nUpsource\n\n\nIf you want to browse the code, feel free to try our \nUpsource\n.\nWe are using this for Team - Code-Reviews too. If you have any questions about the code, mark the part you are interested in and send this link to us with your questions.\n\n\n \n\n\n\n \n \nUpsource - RapidPM - Java-MicroService\n \n sponsored by from \nMacros reply GmbH\n \n\n\nYoutrack\n\n\nFor the version planning and bugtracking we are using \n \n \nYoutrack - RapidPM - Java-MicroService",
             "title": "Projectinfos"

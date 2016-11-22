@@ -26,6 +26,46 @@
     
 
     
+        
+    <url>
+     <loc>/optionals/admin/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/optionals/cli/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/optionals/filesystem/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/optionals/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/optionals/metrics/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/optionals/service/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
     <url>
      <loc>/projectinfos/</loc>
      <lastmod>2016-11-22</lastmod>
