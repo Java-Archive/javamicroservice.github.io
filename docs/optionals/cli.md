@@ -1,4 +1,13 @@
-# CommandLineInstructions
+# CommandLine Instructions
+For an overview of the default commandline instructions pass the argument `-h` to the microservice jar. It will show you this:
+```
+ -h, -help:  Print this page
+ -restPort:  Port for REST
+ -restHost:  Host IP for REST
+ -servletPort:  Port for optionslets
+ -servletHost:  Host IP for optionslets
+```
+
 If you want to define your own parameters add the dependency **rapidpm-microservice-modules-optionals-cli** and use the interface *CmdLineStartupAction*:
 
 ```java
