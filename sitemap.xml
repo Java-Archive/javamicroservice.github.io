@@ -3,32 +3,48 @@
 
     
     <url>
-     <loc>None/</loc>
-     <lastmod>2016-07-10</lastmod>
+     <loc>/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+        
+    <url>
+     <loc>/configuration/parameter/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    <url>
+     <loc>/configuration/action/</loc>
+     <lastmod>2016-11-22</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
+    
+
+    
+    <url>
+     <loc>/projectinfos/</loc>
+     <lastmod>2016-11-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/projectinfos/</loc>
-     <lastmod>2016-07-10</lastmod>
+     <loc>/additionalinfos/</loc>
+     <lastmod>2016-11-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/additionalinfos/</loc>
-     <lastmod>2016-07-10</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
-    
-
-    
-    <url>
-     <loc>None/about/</loc>
-     <lastmod>2016-07-10</lastmod>
+     <loc>/about/</loc>
+     <lastmod>2016-11-22</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
