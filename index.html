@@ -56,6 +56,72 @@
             
             
             
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Configuration <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="configuration/parameter/">Parameters</a>
+</li>
+
+                    
+                        
+<li >
+    <a href="configuration/action/">Startup/Shutdown Action</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Optionals <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="optionals/admin/">Admin</a>
+</li>
+
+                    
+                        
+<li >
+    <a href="optionals/cli/">CLI</a>
+</li>
+
+                    
+                        
+<li >
+    <a href="optionals/filesystem/">Filesystem</a>
+</li>
+
+                    
+                        
+<li >
+    <a href="optionals/">Index</a>
+</li>
+
+                    
+                        
+<li >
+    <a href="optionals/metrics/">Metrics</a>
+</li>
+
+                    
+                        
+<li >
+    <a href="optionals/service/">Service</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
                 <li >
                     <a href="projectinfos/">Projectinfos</a>
                 </li>
@@ -77,13 +143,18 @@
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
                 <li class="disabled">
                     <a rel="next" >
                         <i class="fa fa-arrow-left"></i> Previous
                     </a>
                 </li>
                 <li >
-                    <a rel="prev" href="projectinfos/">
+                    <a rel="prev" href="configuration/parameter/">
                         Next <i class="fa fa-arrow-right"></i>
                     </a>
                 </li>
@@ -97,18 +168,124 @@
             <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="main active"><a href="#we-just-started-to-document-the-java-microservice">We just started to document the Java MicroService..</a></li>
+        <li class="main active"><a href="#welcome-to-the-project-java-microservice">Welcome to the Project Java MicroService</a></li>
         
-            <li><a href="#contact-svenruppert">contact @SvenRuppert</a></li>
+            <li><a href="#snapshots">SNAPSHOTS</a></li>
+        
+            <li><a href="#getting-started">Getting started</a></li>
+        
+            <li><a href="#examples">Examples</a></li>
         
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
-<h1 id="we-just-started-to-document-the-java-microservice">We just started to document the Java MicroService..</h1>
-<p>For now, the best documentation is the source (tests) and the examples project.</p>
-<h2 id="contact-svenruppert">contact @SvenRuppert</h2></div>
+<h1 id="welcome-to-the-project-java-microservice">Welcome to the Project Java MicroService</h1>
+<p><a href="https://gitter.im/RapidPM/rapidpm-microservice?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge&amp;utm_content=badge"><img alt="Join the chat at https://gitter.im/RapidPM/rapidpm-microservice" src="https://badges.gitter.im/Join%20Chat.svg" /></a>
+<a href="https://build.rapidpm.org/viewType.html?buildTypeId=RapidPM_Develop_Microservice_Snapshot&amp;guest=1"><img alt="" src="https://build.rapidpm.org/app/rest/builds/buildType:id:RapidPM_Develop_Microservice_Snapshot/statusIcon" /></a>
+A base implementation for a microservice.</p>
+<p>The Core Service will listen on IP 0.0.0.0
+The base configuration will start Servlets at port 7080 and REST-Endpoints at 7081.</p>
+<h2 id="snapshots">SNAPSHOTS</h2>
+<p>If you are using maven you could add the following to your settings.xml to get the snapshots.</p>
+<pre><code>   &lt;profile&gt;
+      &lt;id&gt;allow-snapshots&lt;/id&gt;
+      &lt;activation&gt;
+        &lt;activeByDefault&gt;true&lt;/activeByDefault&gt;
+      &lt;/activation&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+          &lt;id&gt;snapshots-repo&lt;/id&gt;
+          &lt;url&gt;https://oss.sonatype.org/content/repositories/snapshots&lt;/url&gt;
+          &lt;releases&gt;
+            &lt;enabled&gt;false&lt;/enabled&gt;
+          &lt;/releases&gt;
+          &lt;snapshots&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+            &lt;updatePolicy&gt;always&lt;/updatePolicy&gt;
+          &lt;/snapshots&gt;
+        &lt;/repository&gt;
+      &lt;/repositories&gt;
+    &lt;/profile&gt;
+</code></pre>
+
+<h2 id="getting-started">Getting started</h2>
+<p>The use of the MicroService is fairly simple. Just call <strong>Main.deploy()</strong>. This will start the MicroService with
+all servlets and REST endpoints it can find. Here is small tutorial:
+We create a simple servlet listening on <strong>microservice/test</strong>. Calling it will invoke the doWork() method of our service:</p>
+<pre><code class="java">@WebInitParam(value = &quot;Hello World&quot;, name = &quot;message&quot;)
+@WebServlet(urlPatterns = &quot;/test&quot;)
+public class MyServlet extends HttpServlet {
+
+  @Override
+  public void init(final ServletConfig config) throws ServletException {
+    super.init(config);
+  }
+
+  @Override
+  protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+    PrintWriter writer = resp.getWriter();
+    writer.write(new Service().doWork()); 
+    writer.close();
+  }
+
+  @Override
+  protected void doPost(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
+    doGet(req, resp);
+  }
+}
+
+class Service {
+  public String doWork() {
+    return &quot;Hello World&quot;;
+  }
+}
+</code></pre>
+
+<p>If you are familiar with packaging of jars you can skip this section. But if you want to know how to conveniently package your jar with Maven and the <a href="https://maven.apache.org/plugins/maven-shade-plugin/]">maven-shade-plugin</a>, go on. 
+This plugin helps you packaging the jar with it's dependencies. Also we will give it the information, which main class it has to execute (manifest). 
+After a clean-install Maven will generate you a jar with the MicroService Main as the main class.</p>
+<pre><code class="xml">&lt;plugin&gt;
+  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+  &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;phase&gt;package&lt;/phase&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;shade&lt;/goal&gt;
+      &lt;/goals&gt;
+      &lt;configuration&gt;
+        &lt;dependencyReducedPomLocation&gt;${project.build.directory}/reduced-pom.xml&lt;/dependencyReducedPomLocation&gt;
+        &lt;transformers&gt;
+          &lt;transformer implementation=&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;&gt;
+            &lt;mainClass&gt;org.rapidpm.microservice.Main&lt;/mainClass&gt;
+          &lt;/transformer&gt;
+        &lt;/transformers&gt;
+        &lt;minimizeJar&gt;false&lt;/minimizeJar&gt;
+        &lt;artifactSet&gt;
+          &lt;excludes&gt;
+            &lt;exclude&gt;junit:junit&lt;/exclude&gt;
+            &lt;exclude&gt;jmock:*&lt;/exclude&gt;
+            &lt;exclude&gt;org.openjdk.jmh:*&lt;/exclude&gt;
+            &lt;exclude&gt;*:xml-apis&lt;/exclude&gt;
+            &lt;exclude&gt;org.apache.maven:lib:tests&lt;/exclude&gt;
+            &lt;exclude&gt;log4j:log4j:jar:&lt;/exclude&gt;
+          &lt;/excludes&gt;
+        &lt;/artifactSet&gt;
+      &lt;/configuration&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+&lt;/plugin&gt;
+</code></pre>
+
+<p>After starting the jar you will find the following line in the terminal, telling you that the servlet has been loaded. Now you can call the servlet with <strong>http://localhost:7080/microservice/test</strong></p>
+<pre><code class="terminal">List Servlet - URLs
+http://0.0.0.0:7080/microservice/test
+</code></pre>
+
+<h2 id="examples">Examples</h2>
+<p>See <a href="https://github.com/RapidPM/rapidpm-microservice-examples">rapidpm-microservice-examples</a> for more demos</p></div>
         </div>
 
         <footer class="col-md-12">
@@ -120,6 +297,33 @@
         <script src="./js/jquery-1.10.2.min.js"></script>
         <script src="./js/bootstrap-3.0.3.min.js"></script>
         <script src="./js/highlight.pack.js"></script>
+        <script>var base_url = '.';</script>
+        <script data-main="./mkdocs/js/search.js" src="./mkdocs/js/require.js"></script>
         <script src="./js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
