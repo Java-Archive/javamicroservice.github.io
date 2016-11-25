@@ -9,7 +9,7 @@ Requirements:
     - if no port is given, the MicroService will use the default port 7080, otherwise provide a property file with rest.port=...
     - if you are using log4j provide a log4j2 config file (optional)
 
-1. Create an install script, e.g. myservice.bat
+1. Create an install script, e.g. install_myservice.bat
 ```
 set SERVICENAME=MyService
 set DISPLAYNAME=MyService
@@ -30,4 +30,12 @@ be listet in the services.msc.
 5. If you stop the service, the ServiceWrapper will call the [shutdown url](admin.md). 
 
 
+To deinstall the service create another script, e.g. remove_myservice.bat:
+```
+@echo off
+
+C:/example/prunsrv //DS//MyService
+
+pause
+```
 
