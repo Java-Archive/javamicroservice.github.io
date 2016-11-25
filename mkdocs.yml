@@ -1,4 +1,8 @@
 site_name: Java-Microservice
+site_author: Sven Ruppert
+google_analytics: ['UA-35462441-4', 'MicroService']
+
+
 pages:
 - Home: index.md
 
