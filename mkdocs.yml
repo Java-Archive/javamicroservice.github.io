@@ -6,6 +6,9 @@ google_analytics: ['UA-35462441-4', 'MicroService']
 pages:
 - Home: index.md
 
+- Configuration:
+  - Parameters: configuration/parameter.md
+  - Startup/Shutdown Action: configuration/action.md
 - Projectinfos: projectinfos/index.md
 - Additional Infos: additionalinfos/index.md
 - About: about.md
