@@ -5,7 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-        
+        <meta name="author" content="Sven Ruppert">
         
         <link rel="shortcut icon" href="../../img/favicon.ico">
 
@@ -22,6 +22,16 @@
             <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
 
+        
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-35462441-4', 'MicroService');
+            ga('send', 'pageview');
+        </script>
         
     </head>
 
@@ -320,7 +330,34 @@ The information about the JVM splits into four sections, resulting in four paths
 }
 </code></pre>
 
-<h2 id="performance">Performance</h2></div>
+<h2 id="performance">Performance</h2>
+<p>This section is all about performance metrics and the way the MicroService can give you information about the performance of your application. 
+If you include this module as dependency, the MicroService will add a few URLs that give you accessibility to the metrics of your classes and methods.
+Here's an overview of the paths:</p>
+<pre><code>http://127.0.0.1:7081/rest/metrics/performance/reporter/stopJMXReporter
+http://127.0.0.1:7081/rest/metrics/performance/reporter/startJMXReporter
+http://127.0.0.1:7081/rest/metrics/performance/reporter/startConsoleReporter
+http://127.0.0.1:7081/rest/metrics/performance/reporter/stopConsoleReporter
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/activateMetricsForClass - classFQN
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/deActivateMetricsForClass - classFQN
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/activateMetricsForPKG - pkgFQN
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/deActivateMetricsForPKG - pkgFQN
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/listOneHistogramm - histogrammName
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/removeOneHistogramm - histogrammName
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllActivateMetrics
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllHistogramms
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllHistogrammNames
+</code></pre>
+
+<p>There are different ways to activate metrics:
+- <strong>Runtime</strong>: activate metrics for single classes with the path <strong>/histogramms/activateMetricsForClass/</strong> and add the name of the desired
+class as query parameter
+- <strong>Runtime</strong>: activate packages with the path <strong>/histogramms/activateMetricsForPKG/</strong> and add the name of the target package as query parameter
+- <strong>DDI framework</strong>:
+    - add the annotation <em>@StaticMetricsProxy</em> to your class or method
+    - activate metrics with the method <em>DI.activateMetrics(Class clazz)</em></p>
+<p>To retrieve the information use one of <em>list</em> calls or activate one of the reporter. The <strong>ConsoleReporter</strong> will continually print out
+to the console, while the <strong>JMXReporter</strong> opens an interface for a Java Management Extensions, e.g. the jconsole.</p></div>
         </div>
 
         <footer class="col-md-12">
