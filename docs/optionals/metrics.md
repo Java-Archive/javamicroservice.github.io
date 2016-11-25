@@ -154,3 +154,33 @@ Response:
 ```
 
 ## Performance
+This section is all about performance metrics and the way the MicroService can give you information about the performance of your application. 
+If you include this module as dependency, the MicroService will add a few URLs that give you accessibility to the metrics of your classes and methods.
+Here's an overview of the paths:
+```
+http://127.0.0.1:7081/rest/metrics/performance/reporter/stopJMXReporter
+http://127.0.0.1:7081/rest/metrics/performance/reporter/startJMXReporter
+http://127.0.0.1:7081/rest/metrics/performance/reporter/startConsoleReporter
+http://127.0.0.1:7081/rest/metrics/performance/reporter/stopConsoleReporter
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/activateMetricsForClass - classFQN
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/deActivateMetricsForClass - classFQN
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/activateMetricsForPKG - pkgFQN
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/deActivateMetricsForPKG - pkgFQN
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/listOneHistogramm - histogrammName
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/removeOneHistogramm - histogrammName
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllActivateMetrics
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllHistogramms
+http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllHistogrammNames
+```
+
+There are different ways to activate metrics:
+- **Runtime**: activate metrics for single classes with the path **/histogramms/activateMetricsForClass/** and add the name of the desired
+class as query parameter
+- **Runtime**: activate packages with the path **/histogramms/activateMetricsForPKG/** and add the name of the target package as query parameter
+- **DDI framework**:
+    - add the annotation *@StaticMetricsProxy* to your class or method
+    - activate metrics with the method *DI.activateMetrics(Class clazz)*
+ 
+To retrieve the information use one of *list* calls or activate one of the reporter. The **ConsoleReporter** will continually print out
+to the console, while the **JMXReporter** opens an interface for a Java Management Extensions, e.g. the jconsole.
+
