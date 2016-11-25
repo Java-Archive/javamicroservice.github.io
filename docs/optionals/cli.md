@@ -19,7 +19,7 @@ public interface CmdLineStartupAction {
 }
 ```
 
-Here's an example implementation that reads in a single property:
+Here is an example implementation that reads in a single property:
 ```java
 public class MyPropertyCmdLineOption implements CmdLineStartupAction {
 

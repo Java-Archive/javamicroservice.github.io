@@ -4,12 +4,14 @@ But we can't stop the MicroService without closing the terminal or the need to s
 Basically the ServiceWrapper works as a proxy for the start & stop calls between the MicroService and the Windows service.
 Here is a step-by-step guide to create a service for a MicroService on Windows:
 Requirements: 
-    - prunsrv.exe from [Apache](http://www.apache.org/dist/commons/daemon/binaries/windows/) 
-    - path to the jvm.dll
-    - if no port is given, the MicroService will use the default port 7080, otherwise provide a property file with rest.port=...
-    - if you are using log4j provide a log4j2 config file (optional)
 
-1. Create an install script, e.g. install_myservice.bat
+* prunsrv.exe by [Apache Commons](http://www.apache.org/dist/commons/daemon/binaries/windows/) 
+* path to the jvm.dll, based in the Java installation directory
+* (Optional) if no port is given, the MicroService will use the default port 7080, otherwise provide a property file with rest.port=...
+* (Optional) if you are using log4j provide a log4j2 config file
+  
+---    
+   
 ```
 set SERVICENAME=MyService
 set DISPLAYNAME=MyService
@@ -22,15 +24,15 @@ C:/prunsrv //IS//%SERVICENAME% --DisplayName="%DISPLAYNAME%" --Startup=manual --
 
 pause
 ```
-
+1. Create an install script, e.g. install_myservice.bat above
 2. Run the bat file
 3. Now Windows should open a popup and asks for permission to install the new service. After you done this the service should
-be listet in the services.msc.
+be listed in the services.msc.
 4. Once the service is started it will create a file named microservice.rest. This file is used to store the actual port of the service.
 5. If you stop the service, the ServiceWrapper will call the [shutdown url](admin.md). 
-
-
-To deinstall the service create another script, e.g. remove_myservice.bat:
+  
+  
+To remove the service create another script, e.g. remove_myservice.bat:
 ```
 @echo off
 
