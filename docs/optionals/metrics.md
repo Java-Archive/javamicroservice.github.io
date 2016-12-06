@@ -172,15 +172,15 @@ http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllActivateMetric
 http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllHistogramms
 http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllHistogrammNames
 ```
-
-There are different ways to activate metrics:
-- **Runtime**: activate metrics for single classes with the path **/histogramms/activateMetricsForClass/** and add the name of the desired
-class as query parameter
-- **Runtime**: activate packages with the path **/histogramms/activateMetricsForPKG/** and add the name of the target package as query parameter
-- **DDI framework**:
-    - add the annotation *@StaticMetricsProxy* to your class or method
-    - activate metrics with the method *DI.activateMetrics(Class clazz)*
- 
+  
+There are different ways to activate metrics:  
+* **Runtime**: activate metrics for single classes with the path **/histogramms/activateMetricsForClass/** and add the name of the desired
+    class as query parameter
+* **Runtime**: activate packages with the path **/histogramms/activateMetricsForPKG/** and add the name of the target package as query parameter
+* **DDI framework**:
+    * add the annotation *@StaticMetricsProxy* to your class or method
+    * activate metrics with the method *DI.activateMetrics(Class clazz)*
+   
 To retrieve the information use one of *list* calls or activate one of the reporter. The **ConsoleReporter** will continually print out
 to the console, while the **JMXReporter** opens an interface for a Java Management Extensions, e.g. the jconsole.
 

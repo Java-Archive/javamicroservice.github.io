@@ -10,12 +10,11 @@ pages:
   - Parameters: configuration/parameter.md
   - Startup/Shutdown Action: configuration/action.md
 - Optionals:
-  - Admin: configuration/admin.md
-  - Command Line Instructions: configuration/cli.md
-  - Filesystem: configuration/filesystem.md
-  - Index: configuration/index.md
-  - Metrics: configuration/metrics.md
-  - Service: configuration/service.md
+  - Admin: optionals/admin.md
+  - Command Line Instructions: optionals/cli.md
+  - Index: optionals/index.md
+  - Metrics: optionals/metrics.md
+  - Service: optionals/service.md
 - Projectinfos: projectinfos/index.md
 - Additional Infos: additionalinfos/index.md
 - About: about.md
