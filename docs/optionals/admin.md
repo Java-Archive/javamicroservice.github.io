@@ -1,8 +1,9 @@
 # Administration Module
 The MicroService administration module makes it possible to conveniently shut down the service with an HTTP call. 
 Once the module is included to your service, it will host another path **/admin/basicadministration/{timeout}** besides the servlet and rest paths. 
-The path parameter behind the last **/** sets the milliseconds the service will wait till it stops.
+The path parameter behind the last **/** sets the milliseconds the service will wait till it stops.  
 To include this function just add the artifact **rapidpm-microservice-modules-optionals-admin** as a dependency in your pom.
+  
   
 Example call to shutdown a MicroService:
 ```

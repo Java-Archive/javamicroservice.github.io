@@ -50,13 +50,15 @@ Response:
 ## JVM 
 Additionally to the core health of the Undertow Server, this module gives you an inside into the JVM it's running in.
 The information about the JVM splits into four sections, resulting in four paths (starting with **/metics/jvm**) you can call:
-- **loadinfos**: GarbageCollector
-- **osinfos**: informations about the os it's running on
-- **specinfos**: RuntimeMXBean with system properties of the JVM
-- **memoryinfos**: memory usage
+  
+* **loadinfos**: GarbageCollector  
+* **osinfos**: informations about the os it's running on  
+* **specinfos**: RuntimeMXBean with system properties of the JVM    
+* **memoryinfos**: memory usage  
 
 ### loadinfos
 Content: 
+
 - collectionCount
 - collectionTime
 - memoryPoolNames
@@ -64,9 +66,9 @@ Content:
 
 
 Example call:
-```
-http://127.0.0.1:7081/rest/metrics/jvm/loadinfos
-```
+
+    http://127.0.0.1:7081/rest/metrics/jvm/loadinfos
+
 Response:
 ```json
 [
@@ -87,6 +89,7 @@ Response:
 
 ### osinfos
 Content: 
+
 - name
 - arch
 - version
@@ -94,9 +97,9 @@ Content:
 
 
 Example call:
-```
-http://127.0.0.1:7081/rest/metrics/jvm/osinfos
-```
+
+    http://127.0.0.1:7081/rest/metrics/jvm/osinfos
+
 Response:
 ```json
 {
@@ -109,15 +112,16 @@ Response:
 
 ### specinfos
 Content: 
+
 - name
 - vendor
 - version
 
 
 Example call:
-```
-http://127.0.0.1:7081/rest/metrics/jvm/specinfos
-```
+
+    http://127.0.0.1:7081/rest/metrics/jvm/specinfos
+    
 Response:
 ```json
 {
@@ -129,6 +133,7 @@ Response:
 
 ### memoryinfos
 Content: 
+
 - freeMemory
 - maxMemory
 - totalMemory
@@ -138,9 +143,9 @@ Content:
 
 
 Example call:
-```
-http://127.0.0.1:7081/rest/metrics/jvm/memoryinfos
-```
+
+    http://127.0.0.1:7081/rest/metrics/jvm/memoryinfos
+
 Response:
 ```json
 {
@@ -172,15 +177,16 @@ http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllActivateMetric
 http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllHistogramms
 http://127.0.0.1:7081/rest/metrics/performance/histogramms/listAllHistogrammNames
 ```
-  
-There are different ways to activate metrics:  
+
+There are different ways to activate metrics:
+
 * **Runtime**: activate metrics for single classes with the path **/histogramms/activateMetricsForClass/** and add the name of the desired
-    class as query parameter
+class as query parameter
 * **Runtime**: activate packages with the path **/histogramms/activateMetricsForPKG/** and add the name of the target package as query parameter
 * **DDI framework**:
     * add the annotation *@StaticMetricsProxy* to your class or method
     * activate metrics with the method *DI.activateMetrics(Class clazz)*
-   
+ 
 To retrieve the information use one of *list* calls or activate one of the reporter. The **ConsoleReporter** will continually print out
 to the console, while the **JMXReporter** opens an interface for a Java Management Extensions, e.g. the jconsole.
 
