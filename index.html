@@ -99,13 +99,7 @@
                     
                         
 <li >
-    <a href="optionals/cli/">CLI</a>
-</li>
-
-                    
-                        
-<li >
-    <a href="optionals/filesystem/">Filesystem</a>
+    <a href="optionals/cli/">Command Line Instructions</a>
 </li>
 
                     
@@ -222,21 +216,56 @@ The base configuration will start Servlets at port 7080 and REST-Endpoints at 70
 
 <h2 id="getting-started">Getting started</h2>
 <p>The use of the MicroService is fairly simple. Just call <strong>Main.deploy()</strong>. This will start the MicroService with
-all servlets and REST endpoints it can find. Here is small tutorial:
-We create a simple servlet listening on <strong>microservice/test</strong>. Calling it will invoke the doWork() method of our service:</p>
-<pre><code class="java">@WebInitParam(value = &quot;Hello World&quot;, name = &quot;message&quot;)
-@WebServlet(urlPatterns = &quot;/test&quot;)
-public class MyServlet extends HttpServlet {
+all servlets and REST endpoints it can find.   </p>
+<h3 id="rest-example">REST example</h3>
+<p>Let's create a simple service that will multiply two parameters. The service will listen on the path <strong>/multiply</strong> and returns 
+ an Integer. Here is the code:</p>
+<pre><code class="java">@Path(&quot;/multiply&quot;)
+public class Service {
 
-  @Override
-  public void init(final ServletConfig config) throws ServletException {
-    super.init(config);
+  @GET()
+  @Produces(&quot;text/plain&quot;)
+  public int get(@QueryParam(&quot;x&quot;) int x, @QueryParam(&quot;y&quot;) int y) {
+    return Math.multiplyExact(x, y);
   }
+}
+</code></pre>
+
+<p>And the corresponding JUnit Test:</p>
+<pre><code class="java">public class RestTest {
+
+  @Test
+  public void testRestPath() throws Exception {
+    Main.deploy();
+
+    Client client = ClientBuilder.newClient();
+
+    final String generateURL = TestPortProvider.generateURL(&quot;/rest&quot; + &quot;/multiply&quot;);
+    System.out.println(&quot;generateURL = &quot; + generateURL);
+    int val = client
+        .target(generateURL)
+        .queryParam(&quot;x&quot;, 2)
+        .queryParam(&quot;y&quot;, 21)
+        .request()
+        .get(Integer.class);
+    Assert.assertEquals(42, val); // the only truth
+
+    client.close();
+    Main.stop();
+  }
+
+}
+</code></pre>
+
+<h3 id="servlet-example">Servlet example</h3>
+<p>Here is a simple WebServlet, that will be deployed by the MicroService as soon as <strong>Main.deploy()</strong> is called:</p>
+<pre><code class="java">@WebServlet(urlPatterns = &quot;/hello&quot;)
+public class HelloServlet extends HttpServlet {
 
   @Override
   protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
     PrintWriter writer = resp.getWriter();
-    writer.write(new Service().doWork()); 
+    writer.write(&quot;hello &quot; + req.getParameter(&quot;name&quot;));
     writer.close();
   }
 
@@ -245,53 +274,40 @@ public class MyServlet extends HttpServlet {
     doGet(req, resp);
   }
 }
+</code></pre>
 
-class Service {
-  public String doWork() {
-    return &quot;Hello World&quot;;
+<p>And the corresponding JUnit Test:</p>
+<pre><code class="java">public class ServletTest extends BaseTest{
+  private static String url;
+
+  @Before
+  public void setUp() throws Exception {
+    Main.deploy();
+    url = &quot;http://127.0.0.1:&quot; + System.getProperty(MainUndertow.SERVLET_PORT_PROPERTY)
+        + MainUndertow.MYAPP
+        + HelloServlet.class.getAnnotation(WebServlet.class).urlPatterns()[0];
+    System.out.println(&quot;generateURL = &quot; + url);
+  }
+
+  @After
+  public void tearDown() throws Exception {
+    Main.stop();
+  }
+
+  @Test
+  public void testServletGetRequest() throws Exception {
+    Client client = ClientBuilder.newClient();
+
+    Response response = client
+        .target(url)
+        .queryParam(&quot;name&quot;, &quot;marvin&quot;)
+        .request()
+        .get();
+    Assert.assertEquals(&quot;hello marvin&quot;, response.readEntity(String.class));
+    response.close();
+    client.close();
   }
 }
-</code></pre>
-
-<p>If you are familiar with packaging of jars you can skip this section. But if you want to know how to conveniently package your jar with Maven and the <a href="https://maven.apache.org/plugins/maven-shade-plugin/]">maven-shade-plugin</a>, go on. 
-This plugin helps you packaging the jar with it's dependencies. Also we will give it the information, which main class it has to execute (manifest). 
-After a clean-install Maven will generate you a jar with the MicroService Main as the main class.</p>
-<pre><code class="xml">&lt;plugin&gt;
-  &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-  &lt;artifactId&gt;maven-shade-plugin&lt;/artifactId&gt;
-  &lt;executions&gt;
-    &lt;execution&gt;
-      &lt;phase&gt;package&lt;/phase&gt;
-      &lt;goals&gt;
-        &lt;goal&gt;shade&lt;/goal&gt;
-      &lt;/goals&gt;
-      &lt;configuration&gt;
-        &lt;dependencyReducedPomLocation&gt;${project.build.directory}/reduced-pom.xml&lt;/dependencyReducedPomLocation&gt;
-        &lt;transformers&gt;
-          &lt;transformer implementation=&quot;org.apache.maven.plugins.shade.resource.ManifestResourceTransformer&quot;&gt;
-            &lt;mainClass&gt;org.rapidpm.microservice.Main&lt;/mainClass&gt;
-          &lt;/transformer&gt;
-        &lt;/transformers&gt;
-        &lt;minimizeJar&gt;false&lt;/minimizeJar&gt;
-        &lt;artifactSet&gt;
-          &lt;excludes&gt;
-            &lt;exclude&gt;junit:junit&lt;/exclude&gt;
-            &lt;exclude&gt;jmock:*&lt;/exclude&gt;
-            &lt;exclude&gt;org.openjdk.jmh:*&lt;/exclude&gt;
-            &lt;exclude&gt;*:xml-apis&lt;/exclude&gt;
-            &lt;exclude&gt;org.apache.maven:lib:tests&lt;/exclude&gt;
-            &lt;exclude&gt;log4j:log4j:jar:&lt;/exclude&gt;
-          &lt;/excludes&gt;
-        &lt;/artifactSet&gt;
-      &lt;/configuration&gt;
-    &lt;/execution&gt;
-  &lt;/executions&gt;
-&lt;/plugin&gt;
-</code></pre>
-
-<p>After starting the jar you will find the following line in the terminal, telling you that the servlet has been loaded. Now you can call the servlet with <strong>http://localhost:7080/microservice/test</strong></p>
-<pre><code class="terminal">List Servlet - URLs
-http://0.0.0.0:7080/microservice/test
 </code></pre>
 
 <h2 id="examples">Examples</h2>
